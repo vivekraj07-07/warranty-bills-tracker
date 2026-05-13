@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+body{
+  margin:0;
+  font-family:Segoe UI;
+  color:white;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+  background:
+    radial-gradient(circle at 20% 30%, #4b1d7f, transparent 35%),
+    radial-gradient(circle at 80% 70%, #1e40af, transparent 35%),
+    linear-gradient(135deg,#1c2a4b,#1a2540);
+  background-size:200% 200%;
+  animation:bg 16s ease infinite;
+}
+
+@keyframes bg{
+  0%{background-position:0% 50%;}
+  50%{background-position:100% 50%;}
+  100%{background-position:0% 50%;}
+}
+
+.container{
+  background:white;
+  color:black;
+  padding:40px;
+  border-radius:15px;
+  width:350px;
+  text-align:center;
+  box-shadow:0 10px 30px rgba(0,0,0,0.3);
+}
+
+h2{margin-bottom:20px;}
+
+.input-box{
+  width:100%;
+  margin-bottom:15px;
+}
+
+.input-box input{
+  width:100%;
+  padding:10px;
+  border-radius:8px;
+  border:1px solid #ccc;
+  font-size:14px;
+}
+
+.btn{
+  width:100%;
+  padding:12px;
+  border:none;
+  border-radius:8px;
+  background:#1e40af;
+  color:white;
+  font-weight:bold;
+  cursor:pointer;
+  transition:.3s;
+}
+
+.btn:hover{
+  transform:scale(1.05);
+}
+
+.link{
+  margin-top:15px;
+  font-size:14px;
+}
+
+.link a{
+  color:#1e40af;
+  text-decoration:none;
+  font-weight:600;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <h2>Login</h2>
+
+  <div class="input-box">
+    <input type="email" id="email" placeholder="Email">
+  </div>
+
+  <div class="input-box">
+    <input type="password" id="password" placeholder="Password">
+  </div>
+
+  <button class="btn" onclick="loginUser()">Login</button>
+
+  <div class="link">
+    Don’t have an account? <a href="signup.html">Sign Up</a>
+  </div>
+</div>
+<script>
+
+async function loginUser() {
+
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+
+    if (!email || !password) {
+
+        alert("Please fill all fields");
+        return;
+
+    }
+
+    try {
+
+        const response = await fetch("http://localhost:5000/login", {
+
+            method: "POST",
+
+            headers: {
+                "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify({
+                email,
+                password
+            })
+
+        });
+
+        const data = await response.json();
+
+        alert(data.message);
+        localStorage.setItem("loggedInUser", JSON.stringify(data.user));
+        window.location.href = "dashboard.html";
+
+        if (response.ok) {
+
+            localStorage.setItem("user", JSON.stringify(data.user));
+
+            window.location.href = "dashboard.html";
+
+        }
+
+    } catch (error) {
+
+        console.log(error);
+
+        alert("Something went wrong");
+
+    }
+
+}
+
+</script>
+</body>
+</html>

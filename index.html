@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Warranty & Bills Tracker</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+*{box-sizing:border-box;}
+
+body{
+margin:0;
+font-family:Segoe UI;
+color:white;
+
+/* PREMIUM LIGHTER DARK BG */
+background:
+radial-gradient(circle at 20% 30%, #4b1d7f, transparent 35%),
+radial-gradient(circle at 80% 70%, #1e40af, transparent 35%),
+linear-gradient(135deg,#1c2a4b,#1a2540);
+
+background-size:200% 200%;
+animation:bg 16s ease infinite;
+}
+
+@keyframes bg{
+0%{background-position:0% 50%;}
+50%{background-position:100% 50%;}
+100%{background-position:0% 50%;}
+}
+
+/* NAVBAR */
+.navbar{
+display:flex;
+justify-content:flex-end;
+align-items:center;
+padding:20px 50px;
+}
+
+.nav-links{
+display:flex;
+gap:15px;
+}
+
+/* LOGIN */
+.login-btn{
+padding:8px 18px;
+border:none;
+border-radius:8px;
+cursor:pointer;
+background:transparent;
+color:white;
+font-weight:600;
+transition:0.3s;
+}
+
+.login-btn:hover{
+color:#facc15;
+}
+
+/* SIGNUP */
+.signup-btn{
+padding:8px 18px;
+border:none;
+border-radius:8px;
+cursor:pointer;
+background:white;
+color:#1e40af;
+font-weight:600;
+transition:0.3s;
+}
+
+.signup-btn:hover{
+transform:scale(1.05);
+}
+
+/* TITLE */
+.topbar{
+padding:10px 50px 0;
+}
+
+.title{
+font-size:80px;
+font-weight:900;
+line-height:1.1;
+}
+
+/* HERO */
+.hero{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:20px 50px 60px;
+flex-wrap:wrap;
+}
+
+.left{max-width:600px;}
+
+.subtitle{
+font-size:34px;
+font-weight:600;
+line-height:1.3;
+}
+
+.desc{
+font-size:24px;
+margin:10px 0;
+}
+
+.highlight{
+background:linear-gradient(90deg,#facc15,#fde047);
+-webkit-background-clip:text;
+color:transparent;
+font-weight:700;
+}
+
+/* CTA BUTTON */
+.left button{
+padding:15px 30px;
+font-size:20px;
+border:none;
+border-radius:10px;
+cursor:pointer;
+background:white;
+color:#2563eb;
+font-weight:bold;
+margin-top:15px;
+transition:.3s;
+}
+
+.left button:hover{
+transform:scale(1.05);
+}
+
+/* RIGHT */
+.right{
+display:flex;
+align-items:center;
+gap:40px;
+margin-top:20px;
+}
+
+.cards{
+display:flex;
+flex-direction:column;
+gap:20px;
+}
+
+.floating{
+padding:14px 20px;
+border-radius:12px;
+display:flex;
+gap:10px;
+align-items:center;
+background:rgba(255,255,255,0.15);
+border:1px solid rgba(255,255,255,0.25);
+animation:float 3s ease-in-out infinite;
+}
+
+@keyframes float{
+0%{transform:translateY(0);}
+50%{transform:translateY(-8px);}
+100%{transform:translateY(0);}
+}
+
+.success{color:#22c55e;}
+.active{color:#38bdf8;}
+
+/* SHIELD */
+.shield{
+font-size:180px;
+background:linear-gradient(#fff,#c7d2fe);
+-webkit-background-clip:text;
+color:transparent;
+position:relative;
+text-shadow: 0 0 10px rgba(199,210,254,0.8), 0 0 20px rgba(199,210,254,0.5);
+animation:shieldGlow 2s ease-in-out infinite alternate;
+}
+
+@keyframes shieldGlow{
+0%{text-shadow: 0 0 8px rgba(199,210,254,0.7), 0 0 16px rgba(199,210,254,0.4);}
+50%{text-shadow: 0 0 15px rgba(199,210,254,0.9), 0 0 30px rgba(199,210,254,0.6);}
+100%{text-shadow: 0 0 8px rgba(199,210,254,0.7), 0 0 16px rgba(199,210,254,0.4);}
+}
+
+/* BOTTOM CARDS */
+.nav{
+display:flex;
+gap:25px;
+padding:40px 50px 80px;
+flex-wrap:wrap;
+}
+
+.card{
+flex:1;
+min-width:250px;
+padding:30px;
+border-radius:18px;
+text-align:center;
+background:white;
+color:black;
+transition:.3s;
+box-shadow:0 10px 25px rgba(0,0,0,0.2);
+}
+
+.card:hover{
+transform:translateY(-10px);
+box-shadow:0 20px 40px rgba(0,0,0,0.3);
+}
+
+.card i{
+font-size:30px;
+margin-bottom:15px;
+color:#1e40af;
+}
+
+.card h3{
+font-size:22px;
+margin-bottom:10px;
+}
+
+.card p{
+font-size:16px;
+color:#555;
+}
+
+.nav .card button{
+margin-top:18px;
+padding:10px 22px;
+border:none;
+border-radius:8px;
+cursor:pointer;
+background:#1e40af;
+color:white;
+transition:.3s;
+}
+
+.nav .card button:hover{
+transform:scale(1.05);
+background:#2563eb;
+}
+</style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<div class="navbar">
+<div class="nav-links">
+<button class="login-btn" onclick="location.href='login.html'">Login</button>
+<button class="signup-btn" onclick="location.href='signup.html'">Sign Up</button>
+</div>
+</div>
+
+<!-- TITLE -->
+<div class="topbar">
+<div class="title">Warranty & Bills Tracker</div>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+
+<div class="left">
+<div class="subtitle">
+Track your product <span class="highlight">warranties</span> and bills effortlessly
+</div>
+
+<div class="desc">
+Store <span class="highlight">receipts</span> and manage warranties all in one place
+</div>
+
+<div class="desc">
+Never lose <span class="highlight">track</span> again
+</div>
+
+<button onclick="location.href='dashboard.html'">
+Start Tracking
+</button>
+</div>
+
+<div class="right">
+<div class="cards">
+<div class="floating">
+<i class="fa-solid fa-check-circle success"></i>
+Receipt saved securely
+</div>
+
+<div class="floating">
+<i class="fa-solid fa-clock active"></i>
+Warranty tracking active
+</div>
+</div>
+
+<div class="shield">
+<i class="fa-solid fa-shield-halved"></i>
+</div>
+</div>
+
+</div>
+
+<!-- BOTTOM CARDS -->
+<div class="nav">
+
+<div class="card">
+<i class="fa-solid fa-circle-question"></i>
+<h3>Problems We Solve</h3>
+<p>Track lost bills, expired warranties, and messy records easily.</p>
+<button onclick="location.href='problems.html'">Learn More</button>
+</div>
+
+<div class="card">
+<i class="fa-solid fa-bolt"></i>
+<h3>How Smart Tracking Works</h3>
+<p>Organize, store, and monitor all your products automatically.</p>
+<button onclick="location.href='features.html'">See Features</button>
+</div>
+
+<div class="card">
+<i class="fa-solid fa-chart-line"></i>
+<h3>Product Dashboard</h3>
+<p>View and manage all your stored items in one place.</p>
+<button onclick="location.href='dashboard.html'">Open Dashboard</button>
+</div>
+
+</div>
+
+</body>
+</html>

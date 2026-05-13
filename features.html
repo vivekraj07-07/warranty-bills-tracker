@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>App Features</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+*{box-sizing:border-box;}
+body{
+  margin:0;
+  font-family:Segoe UI;
+  color:white;
+  background:
+    radial-gradient(circle at 20% 30%, #4b1d7f, transparent 35%),
+    radial-gradient(circle at 80% 70%, #1e40af, transparent 35%),
+    linear-gradient(135deg,#1c2a4b,#1a2540);
+  background-size:200% 200%;
+  animation:bg 16s ease infinite;
+}
+@keyframes bg{
+  0%{background-position:0% 50%;}
+  50%{background-position:100% 50%;}
+  100%{background-position:0% 50%;}
+}
+
+/* NAVBAR */
+.navbar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:20px 50px;
+}
+.logo{font-size:32px;font-weight:900;cursor:pointer; line-height:1;}
+.top-btn{
+  padding:10px 22px;
+  border:none;
+  border-radius:8px;
+  background:white;
+  color:#1e40af;
+  font-weight:600;
+  cursor:pointer;
+  transition:.3s;
+  text-align:center;
+  line-height:1.2;
+  white-space:pre-line;
+}
+.top-btn:hover{transform:scale(1.05);}
+
+/* HERO / CTA */
+.hero-container{
+  padding:20px 50px;
+  margin:0;
+  max-width:1100px; /* aligns with navbar width */
+}
+.hero-left{
+  max-width:650px;
+}
+.hero-left h2{
+  font-size:36px;
+  font-weight:700;
+  margin-bottom:15px;
+}
+.hero-left p{
+  font-size:20px;
+  line-height:1.5;
+  margin-bottom:20px;
+}
+.cta-btn{
+  padding:12px 26px;
+  font-size:18px;
+  border:none;
+  border-radius:10px;
+  background:white;
+  color:#1e40af;
+  font-weight:bold;
+  cursor:pointer;
+  transition:.3s;
+  margin-bottom:30px;
+}
+.cta-btn:hover{
+  transform:scale(1.05);
+}
+
+/* FEATURE CARDS */
+.container{
+  display:flex;
+  flex-wrap:wrap;
+  gap:25px;
+  padding-left:50px; /* align with navbar */
+  padding-right:50px;
+  justify-content:flex-start;
+  margin:0;
+  width:100%;
+}
+.section-title{
+  width:100%;
+  font-size:32px;
+  font-weight:800;
+  opacity:0.95;
+  letter-spacing:0.5px;
+  border-bottom:3px solid #fff;
+  padding-bottom:6px;
+  margin-bottom:20px;
+  text-align:left;
+  text-shadow:0 0 8px rgba(255,255,255,0.7);
+}
+.card{
+  flex:1 1 calc(33.333% - 25px);
+  min-width:250px;
+  background:white;
+  color:black;
+  padding:30px;
+  border-radius:18px;
+  text-align:center;
+  box-shadow:0 10px 25px rgba(0,0,0,0.2);
+  transition:.3s;
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-start;
+  margin-bottom:20px;
+}
+.card:hover{
+  transform:translateY(-10px);
+  box-shadow:0 20px 40px rgba(0,0,0,0.3);
+}
+.card i{font-size:30px;margin-bottom:15px;color:#1e40af;}
+.card h3{font-size:22px;margin-bottom:10px;}
+.card p{font-size:16px;color:#555;}
+
+/* BOTTOM NAV */
+.bottom-nav{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding-left:50px; /* align with navbar */
+  padding-right:50px;
+  margin:0 auto 80px;
+}
+.bottom-nav button{
+  padding:10px 22px;
+  font-size:16px;
+  border:none;
+  border-radius:8px;
+  background:white;
+  color:#1e40af;
+  font-weight:600;
+  cursor:pointer;
+  transition:.3s;
+}
+.bottom-nav button:hover{
+  transform:scale(1.05);
+  background:#f0f0f0;
+}
+
+/* Glowing guideline like dashboard */
+.nav-text{
+  text-align:center;
+  font-size:16px;
+  font-weight:700;
+  color:#fff;
+  flex:0 0 auto;
+  padding:5px 15px;
+  border-radius:6px;
+  background:linear-gradient(45deg,#4b1d7f,#1e40af,#4b1d7f);
+  box-shadow:0 0 8px #fff;
+  animation:glow 2s infinite alternate;
+}
+@keyframes glow{
+  from{box-shadow:0 0 8px #fff;}
+  to{box-shadow:0 0 20px #fff;}
+}
+
+/* RESPONSIVE */
+@media(max-width:992px){
+  .card{flex:1 1 calc(50% - 12.5px);}
+  .hero-left p{max-width:100%;}
+}
+@media(max-width:600px){
+  .card{flex:1 1 100%;}
+  .hero-left p{max-width:100%;}
+}
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<div class="navbar">
+  <div class="logo" onclick="location.href='index.html'">Warranty & Bills Tracker</div>
+  <button class="top-btn" onclick="location.href='index.html'">Go to<br>Main Menu</button>
+</div>
+
+<!-- HERO -->
+<div class="hero-container">
+  <div class="hero-left">
+    <h2>Smart Features for Effortless Tracking</h2>
+    <p>Our app helps you organize, monitor, and manage all your bills, products, and warranties digitally, efficiently and automatically, ensuring hassle-free tracking and instant access.</p>
+    <button class="cta-btn" onclick="location.href='dashboard.html'">Open Dashboard</button>
+  </div>
+</div>
+
+<!-- FEATURE CARDS -->
+<div class="container">
+  <div class="section-title">Core Features</div>
+  <div class="card">
+    <i class="fa-solid fa-bolt"></i>
+    <h3>Automatic Monitoring</h3>
+    <p>By storing your bills digitally, the system automatically keeps track of your products and warranties, ensuring everything stays up-to-date without extra effort.</p>
+  </div>
+  <div class="card">
+    <i class="fa-solid fa-shield-halved"></i>
+    <h3>Secure & Accessible Storage</h3>
+    <p>Keep sensitive documents and warranty proofs safe and protected. View and manage your data on any device, anytime, anywhere.</p>
+  </div>
+  <div class="card">
+    <i class="fa-solid fa-clock"></i>
+    <h3>Timely Reminders & Alerts</h3>
+    <p>Receive notifications before warranties expire or bills are due. Stay on top of important dates and never miss a claim or renewal opportunity.</p>
+  </div>
+</div>
+
+<!-- BOTTOM NAV -->
+<div class="bottom-nav">
+  <button onclick="location.href='problems.html'">← Back to Highlights</button>
+  <div class="nav-text">Master your product management</div>
+  <button onclick="location.href='dashboard.html'">Go to Dashboard Overview →</button>
+</div>
+
+</body>
+</html>

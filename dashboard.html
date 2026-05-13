@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Product Dashboard</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+*{box-sizing:border-box;}
+body{
+  margin:0;
+  font-family:Segoe UI;
+  color:white;
+  background:
+    radial-gradient(circle at 20% 30%, #4b1d7f, transparent 35%),
+    radial-gradient(circle at 80% 70%, #1e40af, transparent 35%),
+    linear-gradient(135deg,#1c2a4b,#1a2540);
+  background-size:200% 200%;
+  animation:bg 16s ease infinite;
+}
+@keyframes bg{
+  0%{background-position:0% 50%;}
+  50%{background-position:100% 50%;}
+  100%{background-position:0% 50%;}
+}
+
+/* NAVBAR */
+.navbar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:15px 30px;
+  position:fixed;
+  top:0;
+  height:80px;
+  background:rgba(28,42,75,0.85);
+  z-index:100;
+  backdrop-filter: blur(8px);
+  box-shadow:0 2px 10px rgba(0,0,0,0.3);
+  transition: all 0.3s;
+  left:250px;
+  width:calc(100% - 250px);
+}
+.search-box{
+    margin:20px 0;
+}
+
+.search-box input{
+    width:100%;
+    padding:12px;
+    border:none;
+    border-radius:10px;
+    font-size:16px;
+    outline:none;
+}
+.navbar-left{
+  display:flex;
+  align-items:center;
+  gap:15px;
+  transition: all 0.3s;
+}
+.toggle-btn{
+  background:white;
+  border:none;
+  padding:8px 12px;
+  border-radius:6px;
+  cursor:pointer;
+  font-size:18px;
+  display:flex;
+  align-items:center;
+}
+.navbar h2{
+  margin:0; 
+  font-size:26px; 
+  font-weight:700;
+  line-height:1;
+}
+.navbar-right{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+.navbar-right button{
+  border:none;
+  border-radius:8px;
+  padding:16px 24px;
+  cursor:pointer;
+  font-weight:700;
+  font-size:16px;
+}
+.alert-btn{background:white; color:#1e40af;}
+.logout-btn{background:#111827; color:white;}
+.navbar-date{
+  display:flex;
+  align-items:center;
+  font-size:16px;
+  background:rgba(255,255,255,0.15);
+  padding:6px 12px;
+  border-radius:8px;
+  gap:6px;
+  color:white;
+  font-weight:600;
+}
+
+/* SIDEBAR */
+.sidebar{
+  position:fixed;
+  top:0;
+  left:0;
+  width:250px;
+  height:100%;
+  background:rgba(28,42,75,0.95);
+  backdrop-filter:blur(6px);
+  padding:20px;
+  overflow-y:auto;
+  color:white;
+  z-index:99;
+  transition:0.3s;
+  font-size:16px;
+}
+.sidebar.hide{left:-250px;}
+.sidebar h2{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-size:26px;
+  font-weight:700;
+  margin-bottom:20px;
+}
+.sidebar input{
+  width:100%;
+  padding:8px;
+  margin-bottom:10px;
+  border-radius:6px;
+  border:none;
+  font-size:16px;
+}
+.sidebar .add-btn{
+  margin-bottom:15px;
+  width:100%;
+  padding:8px;
+  border-radius:6px;
+  border:none;
+  background:white;
+  color:#1e40af;
+  font-weight:bold;
+  cursor:pointer;
+  font-size:16px;
+}
+.sidebar button.category-btn{
+  width:100%;
+  background:transparent;
+  border:none;
+  color:white;
+  padding:8px 0;
+  text-align:left;
+  cursor:pointer;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  font-size:16px;
+}
+.sidebar .collapse-content{
+  display:none;
+  padding-left:15px;
+  margin-bottom:10px;
+  font-size:16px;
+}
+.sidebar a{
+  display:block;
+  padding:5px 0;
+  color:white;
+  text-decoration:none;
+  font-size:16px;
+}
+
+/* MAIN CONTENT */
+.main{
+  margin-left:250px;
+  transition: all 0.3s;
+  padding:140px 50px 50px 50px;
+  max-width:1300px;
+  margin-right:auto;
+}
+
+/* Intro */
+.intro{
+  margin-bottom:20px;
+}
+.intro h2{font-size:32px; font-weight:700; margin-bottom:10px;}
+.intro p{font-size:18px; line-height:1.5; opacity:0.9; margin:3px 0;}
+
+/* Overview Cards */
+.overview{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:20px;
+  margin-bottom:30px;
+}
+.overview .card{
+  background:white;
+  color:black;
+  padding:20px;
+  border-radius:16px;
+  box-shadow:0 10px 25px rgba(0,0,0,0.2);
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+}
+.overview .card i{font-size:28px; margin-bottom:10px; color:#1e40af;}
+.overview .card h3{font-size:22px; margin-bottom:5px;}
+.overview .card p{font-size:16px; color:#555;}
+
+/* Dashboard Insights */
+.dashboard-insights{
+  margin:20px 0;
+  font-size:22px;       
+  font-weight:700;       
+  text-decoration:underline;
+  color:white;
+}
+
+/* Product Cards */
+.products{
+  display:grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap:25px;
+  margin-bottom:50px;
+}
+.products .card{
+  background:white;
+  color:black;
+  padding:25px;
+  border-radius:18px;
+  box-shadow:0 10px 25px rgba(0,0,0,0.2);
+  position:relative;
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-start;
+}
+.products .card i.icon{ font-size:44px; color:#1e40af; margin-bottom:15px; }
+.products .card h3{ font-size:20px; margin-bottom:5px; font-weight:700; }
+.products .card p{ font-size:16px; margin:2px 0; color:#333; }
+
+/* Status badges semi-transparent white with colored text */
+.status{
+  position:absolute;
+  top:15px;
+  right:15px;
+  font-size:12px;
+  padding:4px 10px;
+  border-radius:20px;
+  font-weight:bold;
+  text-align:center;
+  background:rgba(255,255,255,0.85);
+}
+.active-badge { color:#22c55e; }
+.expiring-badge { color:#fb923c; }
+.expired-badge { color:#ef4444; }
+
+/* Progress bars */
+.bar{
+  height:14px;
+  background:rgba(0,0,0,0.1);
+  border-radius:12px;
+  margin:10px 0;
+  overflow:hidden;
+}
+.fill{
+  height:100%;
+  border-radius:12px;
+  text-align:right;
+  font-size:11px;
+  padding-right:6px;
+  font-weight:bold;
+  line-height:14px;
+  color:white;
+  background: linear-gradient(135deg,#4b1d7f,#1e40af,#1c2a4b);
+}
+
+.buttons{
+  display:flex;
+  gap:10px;
+  margin-top:10px;
+}
+.buttons button{border:none; padding:6px 12px; border-radius:6px; cursor:pointer;}
+.view{background:white; border:1px solid #ddd; color:#1e40af;}
+.edit{background:#111827; color:white;}
+
+/* Bottom navigation */
+.bottom-nav{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-top:40px;
+  margin-bottom:50px;
+}
+.bottom-nav button{
+  padding:10px 22px;
+  font-size:16px;
+  border:none;
+  border-radius:8px;
+  background:white;
+  color:#1e40af;
+  font-weight:600;
+  cursor:pointer;
+  transition:.3s;
+}
+.bottom-nav button:hover{transform:scale(1.05); background:#f0f0f0;}
+.nav-text{
+  text-align:center;
+  font-size:16px;
+  font-weight:700;
+  color:#fff;
+  flex:0 0 auto;
+  padding:5px 15px;
+  border-radius:6px;
+  background:linear-gradient(45deg,#4b1d7f,#1e40af,#4b1d7f);
+  box-shadow:0 0 8px #fff;
+  animation:glow 2s infinite alternate;
+}
+@keyframes glow{
+  from{box-shadow:0 0 8px #fff;}
+  to{box-shadow:0 0 20px #fff;}
+}
+
+/* Responsive */
+@media(max-width:992px){
+  .products{grid-template-columns:repeat(2,1fr);}
+  .overview{grid-template-columns:1fr;}
+  .bottom-nav{flex-direction:column; gap:10px;}
+}
+@media(max-width:600px){
+  .products{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<!-- Sidebar -->
+<div class="sidebar" id="sidebar">
+<h2><i class="fa-solid fa-chart-line"></i> Menu</h2>
+<input type="text" id="productName" placeholder="Product Name">
+
+<input type="number" id="price" placeholder="Price">
+<input type="date" id="purchaseDate" placeholder="Purchase Date">
+<input type="date" id="warranty" placeholder="Warranty Expiry Date">
+<select id="category">
+
+  <option value="">Select Category</option>
+
+  <option value="Electronics">Electronics</option>
+
+  <option value="Appliances">Appliances</option>
+
+  <option value="Medicine">Medicine</option>
+
+  <option value="Bills">Bills</option>
+
+  <option value="Others">Others</option>
+
+</select>
+<button class="add-btn" onclick="addProduct()">
+  Add Product
+</button>
+<button class="category-btn" onclick="toggleCollapse('electronicsList')">Electronics <i class="fa-solid fa-chevron-down"></i></button>
+<div class="collapse-content" id="electronicsList">
+  
+</div>
+<button class="category-btn" onclick="toggleCollapse('applianceList')">Appliances <i class="fa-solid fa-chevron-down"></i></button>
+<div class="collapse-content" id="applianceList">
+  
+</div>
+<button class="category-btn" onclick="toggleCollapse('medicineList')">Medicine <i class="fa-solid fa-chevron-down"></i></button>
+<div class="collapse-content" id="medicineList">
+  
+</div>
+<button class="category-btn" onclick="toggleCollapse('billsList')">Bills <i class="fa-solid fa-chevron-down"></i></button>
+<div class="collapse-content" id="billsList">
+  
+</div>
+<button class="category-btn" onclick="toggleCollapse('otherList')">Others <i class="fa-solid fa-chevron-down"></i></button>
+<div class="collapse-content" id="otherList">
+  
+</div>
+</div>
+
+<!-- Main -->
+<div class="main" id="main">
+  <div class="navbar" id="navbar">
+    <div class="navbar-left" id="navbarLeft">
+      <button class="toggle-btn" onclick="toggleSidebar()"><i class="fa-solid fa-bars"></i></button>
+      <h2 id="navbarTitle">Warranty & Bills Tracker</h2>
+    </div>
+    <div class="navbar-right">
+      <div class="navbar-date">
+        <i class="fa-solid fa-calendar-days"></i>
+        <span id="todayDate">Today's Date:</span>
+      </div>
+      <button class="alert-btn" onclick="showAlerts()">
+<i class="fa-solid fa-bell"></i>
+</button>
+      <button class="logout-btn" onclick="logout()">Logout</button>
+    </div>
+  </div>
+  <div class="search-box">
+
+    <input
+        type="text"
+        id="searchInput"
+        placeholder="Search products..."
+        
+    >
+
+</div>
+
+  <div class="intro">
+    <h2>Your Product Dashboard —</h2>
+    <p>Quickly view all your uploaded products, bills, and warranties.</p>
+    <p>Track active warranties, upcoming expiries, and total stored receipts at a glance.</p>
+    <p>Stay on top of your products and take action before any expiry.</p>
+  </div>
+
+  <div class="dashboard-insights">Dashboard Insights:</div>
+
+  <!-- Overview cards -->
+  <div class="overview">
+    <div class="card"><i class="fa-solid fa-box"></i><h3>Total Products</h3><p id="totalProducts">0</p><p>All products currently tracked</p></div>
+    <div class="card"><i class="fa-solid fa-circle-check"></i><h3>Active</h3><p id="activeProducts">0</p><p>Warranties & bills currently active</p></div>
+    <div class="card"><i class="fa-solid fa-hourglass-half"></i><h3>Expiring Soon</h3><p id="expiringProducts">0</p><p>Warranties or bills nearing expiry</p></div>
+    <div class="card"><i class="fa-solid fa-circle-xmark"></i><h3>Expired</h3><p id="expiredProducts">0</p><p>Products or bills expired</p></div>
+  </div>
+
+  <!-- Product cards -->
+  <div class="products" id="productsContainer"></div>
+
+  <!-- Bottom navigation -->
+  <div class="bottom-nav">
+    <button onclick="location.href='features.html'">← Back to Features</button>
+    <div class="nav-text">Manage your products efficiently</div>
+    <button onclick="location.href='index.html'">Back to Home →</button>
+  </div>
+</div>
+
+<script>
+  const loggedInUser = localStorage.getItem("loggedInUser");
+if (!loggedInUser) {
+    alert("Please login to access the dashboard");
+    window.location.href = "login.html";
+}
+// Sidebar toggle
+function toggleSidebar(){
+  const sidebar = document.getElementById('sidebar');
+  const main = document.getElementById('main');
+  const navbar = document.getElementById('navbar');
+  sidebar.classList.toggle('hide');
+  if(sidebar.classList.contains('hide')){
+    main.style.marginLeft = '0';
+    main.style.width='100%';
+    navbar.style.left = '0';
+    navbar.style.width = '100%';
+  } else {
+    main.style.marginLeft = '250px';
+    main.style.width='calc(100% - 250px)';
+    navbar.style.left = '250px';
+    navbar.style.width = 'calc(100% - 250px)';
+  }
+}
+
+function logout() {
+    localStorage.removeItem("loggedInUser");
+    alert("Logged out successfully");
+    window.location.href = "login.html";
+}
+// Collapse categories
+function toggleCollapse(id){
+  const el=document.getElementById(id);
+  const icon=el.previousElementSibling.querySelector('i');
+  if(el.style.display==='block'){el.style.display='none'; icon.style.transform='rotate(0deg)';} 
+  else{el.style.display='block'; icon.style.transform='rotate(180deg)';}
+}
+
+// Today's date
+const today = new Date();
+const monthNames = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+document.getElementById('todayDate').innerText = `Today's Date: ${today.getDate()} ${monthNames[today.getMonth()]} ${today.getFullYear()}`;
+let editProductId = null;
+
+async function fetchProducts() {
+
+    try {
+
+        const response = await fetch("http://localhost:5000/products");
+
+        const data = await response.json();
+
+        const container = document.getElementById("productsContainer");
+
+        container.innerHTML = "";
+
+        let totalProducts = data.products.length;
+
+        let activeProducts = 0;
+        let expiringProducts = 0;
+        let expiredProducts = 0;
+        document.getElementById("electronicsList").innerHTML = "";
+
+        document.getElementById("applianceList").innerHTML = "";
+
+        document.getElementById("medicineList").innerHTML = "";
+
+        document.getElementById("billsList").innerHTML = "";
+
+        document.getElementById("otherList").innerHTML = "";
+        data.products.forEach((product) => {
+          const today = new Date();
+          const expiryDate = new Date(product.warranty);
+          const timeDiff = expiryDate - today;
+          const remainingDays = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+          if (remainingDays > 30) {
+            activeProducts++;
+}
+          else if (remainingDays > 0 && remainingDays <= 30) {
+            expiringProducts++;
+}
+          else {
+            expiredProducts++;
+}
+
+            const card = document.createElement("div");
+
+            card.className = "card";
+            card.setAttribute(
+    "data-name",
+    product.productName.toLowerCase()
+);
+
+            card.innerHTML = `
+
+    <h3>${product.productName}</h3>
+
+    <p><strong>Price:</strong> ₹${product.price}</p>
+    <p><strong>Purchase Date:</strong> ${product.purchaseDate}</p>
+    <p><strong>Expiry Date:</strong> ${product.warranty}</p>
+
+    <p>
+        <strong>Status:</strong>
+
+        ${
+            remainingDays > 0
+            ? `${remainingDays} days remaining`
+            : "Expired"
+        }
+    </p>
+
+    <div class="buttons">
+
+        <button
+class="view"
+onclick="viewProduct(
+'${product.productName}',
+'${product.price}',
+'${product.warranty}',
+'${product.category}'
+
+)"
+>
+View
+</button>
+
+        <button class="edit" onclick="editProduct(${product.id})">
+            Edit
+        </button>
+
+        <button class="delete" onclick="deleteProduct(${product.id})">
+            Delete
+        </button>
+
+    </div>
+
+`;
+
+            container.appendChild(card);
+            const link = document.createElement("a");
+
+            link.href = "#";
+
+            link.innerText = product.productName;
+
+            if (product.category === "Electronics") {
+
+            document.getElementById("electronicsList").appendChild(link);
+
+}
+
+            else if (product.category === "Appliances") {
+
+            document.getElementById("applianceList").appendChild(link);
+
+}
+
+            else if (product.category === "Medicine") {
+
+            document.getElementById("medicineList").appendChild(link);
+
+}
+
+            else if (product.category === "Bills") {
+
+            document.getElementById("billsList").appendChild(link);
+
+}
+
+           else {
+
+           document.getElementById("otherList").appendChild(link);
+
+}
+
+        });
+        document.getElementById("totalProducts").innerText = totalProducts;
+
+        document.getElementById("activeProducts").innerText = activeProducts;
+
+        document.getElementById("expiringProducts").innerText = expiringProducts;
+
+        document.getElementById("expiredProducts").innerText = expiredProducts;
+
+
+    } catch (error) {
+
+        console.log(error);
+
+    }
+
+}
+const searchInput = document.getElementById("searchInput");
+
+searchInput.addEventListener("input", function () {
+
+  const searchValue = searchInput.value.toLowerCase();
+
+  const cards = document.querySelectorAll(".card");
+
+  cards.forEach((card) => {
+
+    const productName =
+      card.querySelector("h3").innerText.toLowerCase();
+
+    if (productName.includes(searchValue)) {
+      card.style.display = "block";
+    } else {
+      card.style.display = "none";
+    }
+
+  });
+
+});
+
+async function addProduct() {
+
+    const productName =
+        document.getElementById("productName").value;
+
+    const price =
+        document.getElementById("price").value;
+    
+    const warranty =
+        document.getElementById("warranty").value;
+    const purchaseDate =
+        document.getElementById("purchaseDate").value;
+    const category =
+        document.getElementById("category").value;    
+
+    if (!productName || !price || !warranty || !category) {
+
+        alert("Please fill all fields");
+
+        return;
+
+    }
+
+    try {
+
+        const url = editProductId
+    ? `http://localhost:5000/products/${editProductId}`
+    : "http://localhost:5000/products";
+
+const method = editProductId ? "PUT" : "POST";
+
+const response = await fetch(
+    url,
+            {
+                method: method,
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    productName,
+                    price,
+                    purchaseDate,
+                    warranty,
+                    category
+                })
+            }
+        );
+
+        const data = await response.json();
+        if (editProductId) {
+    alert("Product updated successfully");
+} else {
+    alert(data.message);
+}
+
+        
+        fetchProducts();
+
+        document.getElementById("productName").value = "";
+        document.getElementById("price").value = "";
+        document.getElementById("warranty").value = "";
+        editProductId = null;
+
+    } catch (error) {
+
+        console.log(error);
+
+        alert("Something went wrong");
+
+    }
+
+}
+async function editProduct(id) {
+
+    try {
+
+        const response = await fetch("http://localhost:5000/products");
+
+        const data = await response.json();
+
+        const product = data.products.find((p) => p.id === id);
+
+        if (!product) {
+            alert("Product not found");
+            return;
+        }
+
+        document.getElementById("productName").value = product.productName;
+
+        document.getElementById("price").value = product.price;
+
+        document.getElementById("warranty").value = product.warranty;
+
+        editProductId = id;
+
+    } catch (error) {
+
+        console.log(error);
+
+        alert("Something went wrong");
+    }
+}
+
+async function deleteProduct(id) {
+
+    try {
+
+        const response = await fetch(
+            `http://localhost:5000/products/${id}`,
+            {
+                method: "DELETE"
+            }
+
+        );
+
+        const data = await response.json();
+
+        alert(data.message);
+
+        fetchProducts();
+
+    } catch (error) {
+
+        console.log(error);
+
+        alert("Something went wrong");
+
+    }
+
+  }
+function showAlerts() {
+
+const cards = document.querySelectorAll("#productsContainer .card");
+
+let alertMessages = [];
+
+cards.forEach((card) => {
+
+const statusText =
+card.innerText.toLowerCase();
+
+const productName =
+card.querySelector("h3").innerText;
+
+if (statusText.includes("expired")) {
+
+alertMessages.push(
+`${productName} is expired`
+);
+
+}
+
+else if (
+statusText.includes("days remaining")
+) {
+
+const match =
+statusText.match(/\d+/);
+
+if (match) {
+
+const days = parseInt(match[0]);
+
+if (days <= 30) {
+
+alertMessages.push(
+`${productName} will expire in ${days} days`
+);
+
+}
+
+}
+
+}
+
+});
+
+if (alertMessages.length === 0) {
+
+alert("No expiry alerts");
+
+}
+
+else {
+
+alert(alertMessages.join("\n"));
+
+}
+
+}
+function viewProduct(
+name,
+price,
+warranty,
+category
+) {
+
+alert(
+
+`Product Name: ${name}
+
+Price: ₹${price}
+
+Expiry Date: ${warranty}
+
+Category: ${category}`
+
+);
+
+}
+function searchProducts() {
+
+    const searchValue =
+        document
+        .getElementById("searchInput")
+        .value
+        .toLowerCase();
+
+    const cards =
+        document.querySelectorAll(".card");
+
+    cards.forEach((card) => {
+
+        const productName =
+            card.getAttribute("data-name");
+
+        if(productName.includes(searchValue)){
+
+            card.style.display = "block";
+
+        } else {
+
+            card.style.display = "none";
+        }
+
+    });
+}  
+        
+    
+
+        
+
+
+  
+fetchProducts();
+
+
+  
+</script>
+</body>
+</html>
