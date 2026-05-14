@@ -77,9 +77,9 @@ app.post("/login", (req, res) => {
 });
 app.post("/products", (req, res) => {
 
-    const { productName, price, warranty, category, purchaseDate } = req.body;
+    const { productName, price,warrantyMonths, category, purchaseDate } = req.body;
 
-    if (!productName || !price || !warranty || !category) {
+    if (!productName || !price ||   !warrantyMonths || !category) {
         return res.status(400).json({
             message: "All fields are required"
         });
@@ -90,7 +90,7 @@ app.post("/products", (req, res) => {
         productName,
         price,
         purchaseDate,
-        warranty,
+        warrantyMonths,
         category
     };
 
@@ -112,7 +112,7 @@ app.put("/products/:id", (req, res) => {
 
     const productId = parseInt(req.params.id);
 
-    const { productName, price, warranty, category } = req.body;
+    const { productName, price,purchaseDate,  warrantyMonths, category } = req.body;
 
     const product = products.find((p) => p.id === productId);
 
@@ -130,8 +130,10 @@ app.put("/products/:id", (req, res) => {
         product.price = price;
     }
 
-    if (warranty) {
-        product.warranty = warranty;
+    
+
+    if (warrantyMonths) {
+        product.warrantyMonths = warrantyMonths;
     }
 
     res.status(200).json({
