@@ -23,6 +23,27 @@ body{
   50%{background-position:100% 50%;}
   100%{background-position:0% 50%;}
 }
+.progress-container{
+   width:100%;
+   height:18px;
+   background:#ddd;
+   border-radius:20px;
+   overflow:hidden;
+   margin-top:10px;
+}
+
+.progress-bar{
+   height:100%;
+   background:linear-gradient(to right,
+   purple,
+   blue);
+
+   color:white;
+   text-align:center;
+   line-height:18px;
+   font-size:12px;
+   font-weight:bold;
+}
 
 /* NAVBAR */
 .navbar{
@@ -346,7 +367,8 @@ body{
 
 <input type="number" id="price" placeholder="Price">
 <input type="date" id="purchaseDate" placeholder="Purchase Date">
-<input type="date" id="warranty" placeholder="Warranty Expiry Date">
+
+<input type="number" id="warrantyMonths" placeholder="Warranty Months">
 <select id="category">
 
   <option value="">Select Category</option>
@@ -516,9 +538,33 @@ async function fetchProducts() {
         document.getElementById("otherList").innerHTML = "";
         data.products.forEach((product) => {
           const today = new Date();
-          const expiryDate = new Date(product.warranty);
-          const timeDiff = expiryDate - today;
-          const remainingDays = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+
+const purchaseDateObj = new Date(product.purchaseDate);
+
+const totalDays =
+   Number(product.warrantyMonths) * 30;
+
+const usedDays = Math.floor(
+   (today - purchaseDateObj) /
+   (1000 * 60 * 60 * 24)
+);
+
+const remainingDays = totalDays - usedDays;
+let progressPercent =
+((remainingDays / totalDays) * 100);
+
+if (progressPercent < 0) {
+   progressPercent = 0;
+}
+
+let status = "Active";
+
+if (remainingDays <= 0) {
+   status = "Expired";
+}
+else if (remainingDays <= 30) {
+   status = "Expiring Soon";
+}
           if (remainingDays > 30) {
             activeProducts++;
 }
@@ -543,17 +589,41 @@ async function fetchProducts() {
 
     <p><strong>Price:</strong> ₹${product.price}</p>
     <p><strong>Purchase Date:</strong> ${product.purchaseDate}</p>
-    <p><strong>Expiry Date:</strong> ${product.warranty}</p>
+
+    <p><strong>Warranty:</strong>
+${product.warrantyMonths || 0} months</p>
+
+    <p><strong>Days Left:</strong>
+${remainingDays}</p>
 
     <p>
-        <strong>Status:</strong>
+<strong>Status:</strong>
 
-        ${
-            remainingDays > 0
-            ? `${remainingDays} days remaining`
-            : "Expired"
-        }
-    </p>
+<span style="
+color:
+${status === "Active"
+? "green"
+: status === "Expiring Soon"
+? "orange"
+: "red"}
+">
+
+${status}
+
+</span>
+</p>
+
+<div class="progress-container">
+
+<div
+class="progress-bar"
+style="width:${progressPercent}%"
+>
+${Math.floor(progressPercent)}%
+</div>
+
+</div>
+    
 
     <div class="buttons">
 
@@ -562,7 +632,7 @@ class="view"
 onclick="viewProduct(
 '${product.productName}',
 '${product.price}',
-'${product.warranty}',
+'${product.warrantyMonths}',
 '${product.category}'
 
 )"
@@ -667,14 +737,15 @@ async function addProduct() {
     const price =
         document.getElementById("price").value;
     
-    const warranty =
-        document.getElementById("warranty").value;
+    
     const purchaseDate =
         document.getElementById("purchaseDate").value;
+    const warrantyMonths =
+        document.getElementById("warrantyMonths").value;    
     const category =
         document.getElementById("category").value;    
 
-    if (!productName || !price || !warranty || !category) {
+    if (!productName || !price ||  !warrantyMonths || !category) {
 
         alert("Please fill all fields");
 
@@ -701,7 +772,7 @@ const response = await fetch(
                     productName,
                     price,
                     purchaseDate,
-                    warranty,
+                    warrantyMonths,
                     category
                 })
             }
@@ -719,7 +790,8 @@ const response = await fetch(
 
         document.getElementById("productName").value = "";
         document.getElementById("price").value = "";
-        document.getElementById("warranty").value = "";
+        document.getElementById("purchaseDate").value = "";
+        document.getElementById("warrantyMonths").value = "";
         editProductId = null;
 
     } catch (error) {
@@ -750,7 +822,7 @@ async function editProduct(id) {
 
         document.getElementById("price").value = product.price;
 
-        document.getElementById("warranty").value = product.warranty;
+        document.getElementById("warrantyMonths").value = product.warrantyMonths  ;
 
         editProductId = id;
 
@@ -852,7 +924,7 @@ alert(alertMessages.join("\n"));
 function viewProduct(
 name,
 price,
-warranty,
+warrantyMonths,
 category
 ) {
 
@@ -862,7 +934,7 @@ alert(
 
 Price: ₹${price}
 
-Expiry Date: ${warranty}
+Warranty: ${warrantyMonths} months
 
 Category: ${category}`
 
